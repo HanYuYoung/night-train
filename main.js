@@ -34,6 +34,7 @@
       .from('.hero .reveal-up', { y: 30, opacity: 0, duration: 1.2, stagger: .1 }, .6)
       .from('.nav', { opacity: 0, duration: 1.2, clearProps: 'opacity' }, .8)
       .from('.scroll-hint', { opacity: 0, duration: 1 }, 1.4);
+    tl.fromTo('.hero-float', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.8, ease: 'expo.out' }, .5);
   };
   let started = false;
   const start = () => { if (!started) { started = true; setTimeout(heroIn, 350); } };
@@ -101,6 +102,24 @@
     .to('.hero-bg img', { scale: 1.12, yPercent: 8, ease: 'none' }, 0)
     .to('.hero-copy', { y: -140, opacity: 0, ease: 'none' }, 0)
     .to('.scroll-hint', { opacity: 0, ease: 'none', duration: .3 }, 0);
+
+  /* ---------------- hero phone ---------------- */
+  (() => {
+    const ph = $('.hero-phone'); if (!ph) return;
+    const imgs = $$('.screen img', ph); let k = 0;
+    setInterval(() => {
+      if (document.hidden || scrollY > innerHeight) return;
+      imgs[k].classList.remove('on'); k = (k + 1) % imgs.length; imgs[k].classList.add('on');
+    }, 2800);
+    const inner = ph;
+    gsap.set(ph, { rotate: 4, transformPerspective: 1200 });
+    addEventListener('pointermove', e => {
+      if (scrollY > innerHeight) return;
+      const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
+      gsap.to(inner, { rotateY: x * 14, rotateX: -y * 10, duration: 1, ease: 'power3.out', transformPerspective: 1200 });
+    });
+    gsap.to('.hero-float', { yPercent: -18, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  })();
 
   /* ---------------- journey ---------------- */
   (() => {
@@ -236,6 +255,31 @@
       .fromTo('.journey-info', { opacity: 0, x: () => mobile() ? 0 : 60, y: () => mobile() ? 40 : 0 }, { opacity: 1, x: 0, y: 0, duration: INTRO * .6, ease: 'power2.out' }, INTRO * .55)
       .fromTo('.sill, .daynight', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: INTRO * .5 }, INTRO * .6)
       .to({}, { duration: 1 - INTRO });
+  })();
+
+  /* ---------------- app showcase ---------------- */
+  (() => {
+    const steps = $$('#scSteps li'), imgs = $$('.sc-phone .screen img'), dots = $$('#scDots i');
+    const n = steps.length; let cur = 0;
+    const go = i => {
+      if (i === cur) return;
+      [steps, imgs, dots].forEach(list => list.forEach((el, k) => el.classList.toggle('on', k === i)));
+      cur = i;
+    };
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.showcase', start: 'top top', end: () => `+=${n * innerHeight * .5}`, pin: '.sc-pin', scrub: .6, invalidateOnRefresh: true,
+        onUpdate: s => go(Math.min(n - 1, Math.floor(s.progress * n))),
+      },
+    });
+    tl.fromTo('.sc-phone', { rotateY: -16, rotateX: 6 }, { rotateY: 14, rotateX: -4, ease: 'none', duration: 1 }, 0);
+    gsap.fromTo('.sc-phone-wrap', { y: 140, opacity: 0 }, { y: 0, opacity: 1, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: '.showcase', start: 'top 75%', once: true } });
+    gsap.fromTo('.sc-head > *, .sc-steps', { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, stagger: .1, ease: 'expo.out', scrollTrigger: { trigger: '.showcase', start: 'top 70%', once: true } });
+    // click a dot to jump
+    dots.forEach((d, i) => { d.style.cursor = 'pointer'; d.addEventListener('click', () => {
+      const st = tl.scrollTrigger, y = st.start + (st.end - st.start) * (i + .5) / n;
+      lenis ? lenis.scrollTo(y, { duration: 1 }) : scrollTo({ top: y, behavior: 'smooth' });
+    }); });
   })();
 
   /* ---------------- manifesto char fill ---------------- */
