@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>夜行列车 · 番茄钟</title>
+<meta name="description" content="把专注，坐成一趟夜车。每专注 25 分钟，列车停靠一站。15 条线路，91 座车站，点亮整个中国。">
+<meta name="theme-color" content="#070d1f">
+<meta property="og:title" content="夜行列车 · 番茄钟">
+<meta property="og:description" content="把专注，坐成一趟夜车。每专注 25 分钟，列车停靠一站。">
+<meta property="og:image" content="img/hero.webp">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Noto+Serif+SC:wght@400;600;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="loader-ticket">
+    <span class="loader-title">夜行列车</span>
+    <span class="loader-sub">NIGHT TRAIN · 检票中</span>
+    <i class="loader-hole"></i>
+  </div>
+</div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#top"><img src="img/icon.png" alt=""><span>夜行列车</span></a>
+  <nav>
+    <a href="#journey">车窗</a>
+    <a href="#map">线路</a>
+    <a href="#tickets">票夹</a>
+    <a href="#dining">餐车</a>
+  </nav>
+  <button class="sound" id="sound" aria-label="列车环境音" title="列车环境音">
+    <span class="bars"><i></i><i></i><i></i><i></i></span><em>环境音</em>
+  </button>
+  <a class="nav-cta" href="#download">下载</a>
+</header>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <div class="hero-bg"><img src="img/hero.webp" alt="夜色中穿过高架桥的列车"></div>
+  <canvas class="stars" id="stars"></canvas>
+  <div class="hero-shade"></div>
+  <div class="hero-copy">
+    <p class="eyebrow reveal-up">夜行列车 · 番茄钟 <span>Night Train Pomodoro</span></p>
+    <h1 class="hero-title"><span class="line"><span>把专注，</span></span><span class="line"><span>坐成一趟夜车。</span></span></h1>
+    <p class="hero-sub reveal-up">每专注 25 分钟，列车停靠一站。<br>窗外是一整个中国的夜色。</p>
+    <div class="hero-actions reveal-up">
+      <a class="btn btn-amber" href="#download">免费下载 Android 版</a>
+      <a class="btn btn-ghost" href="#journey">先看看窗外 →</a>
+    </div>
+  </div>
+  <div class="scroll-hint"><span>向下滑动，发车</span><i></i></div>
+</section>
+
+<!-- ============ JOURNEY (pinned window) ============ -->
+<section class="journey" id="journey">
+  <div class="journey-pin">
+    <div class="window-wrap">
+      <div class="window" id="window">
+        <div class="scenes" id="scenes"></div>
+        <div class="dusk"></div><div class="pole"></div><div class="pole p2"></div>
+        <div class="glass"></div>
+        <div class="window-intro" id="windowIntro">
+          <p>车窗是你唯一的风景</p>
+        </div>
+      </div>
+      <div class="sill"></div>
+      <div class="daynight" id="daynight" aria-live="polite"><i class="dn-dot"></i><span id="dnText">午后</span></div>
+    </div>
+
+    <div class="journey-info">
+      <p class="j-line"><b>丝绸之路线</b> · 陇海线西段 + 兰新线</p>
+      <div class="j-station">
+        <p class="j-label" id="jLabel">始发站</p>
+        <h2 id="jName">西安</h2>
+        <p class="j-en" id="jEn">Xi'an</p>
+        <p class="j-desc" id="jDesc">十三朝古都，城墙还能骑车绕一圈</p>
+      </div>
+      <div class="j-timer">
+        <svg viewBox="0 0 120 120" class="ring"><circle cx="60" cy="60" r="54" class="ring-bg"/><circle cx="60" cy="60" r="54" class="ring-fg" id="ring"/></svg>
+        <div class="j-time"><span id="jTime">25:00</span><small id="jNext">距 宝鸡</small></div>
+      </div>
+      <div class="j-mini"><svg id="miniMap" aria-label="丝绸之路线路图"></svg></div>
+      <ol class="j-route" id="jRoute"></ol>
+    </div>
+    <div class="stamp" id="stamp"><span id="stampName">宝鸡</span><small>到站</small></div>
+  </div>
+</section>
+
+<!-- ============ MANIFESTO ============ -->
+<section class="manifesto">
+  <div class="mf-bg"><img src="img/compartment.webp" alt="" loading="lazy"></div>
+  <div class="mf-inner">
+    <p class="kicker">为什么是一趟夜车</p>
+    <p class="fill-text" id="fillText">没有排行榜，没有打卡焦虑。只有一盏台灯，一杯慢慢凉掉的茶，和窗外缓缓后退的山。你不必赶路——列车会替你记住，你已经走了多远。</p>
+  </div>
+</section>
+
+<!-- ============ HOW ============ -->
+<section class="how">
+  <div class="how-head">
+    <p class="kicker">三件事</p>
+    <h2 class="section-title">选线，发车，到站。</h2>
+  </div>
+  <div class="how-grid">
+    <article class="how-card">
+      <span class="how-num">01</span>
+      <h3>选一条线</h3>
+      <p>丝绸之路、青藏、京沪、台湾环岛……十五条真实的铁路线。上了车，到终点前不换线。</p>
+      <div class="how-art art-lines"><i></i><i></i><i></i><i></i><i></i></div>
+    </article>
+    <article class="how-card">
+      <span class="how-num">02</span>
+      <h3>发车专注</h3>
+      <p>15、25、45、60 分钟任选。窗外风景在动，你只管做手上的事。离开超过 30 秒，车票上会记一笔晚点。</p>
+      <div class="how-art art-clock"><span>25:00</span></div>
+    </article>
+    <article class="how-card">
+      <span class="how-num">03</span>
+      <h3>到站盖章</h3>
+      <p>攒满 25 分钟，列车停靠一站，出一张车票。零头分钟不会浪费，留给下一段。</p>
+      <div class="how-art art-stamp"><span>到站</span></div>
+    </article>
+  </div>
+</section>
+
+<!-- ============ MAP ============ -->
+<section class="mapsec" id="map">
+  <div class="map-pin">
+    <div class="map-copy">
+      <p class="kicker">线路图</p>
+      <h2 class="section-title">十五条线，<br>点亮整个中国。</h2>
+      <p class="muted">一个省里的车站全部到过，这个省就亮起来。跑完的线可以再跑，退票时到过的站也照样算数。</p>
+      <div class="stats">
+        <div><b data-count="15">15</b><span>条线路</span></div>
+        <div><b data-count="91">91</b><span>座车站</span></div>
+        <div><b data-count="0" id="provCount">0</b><span>个省级行政区</span></div>
+      </div>
+      <ul class="line-list" id="lineList"></ul>
+    </div>
+    <div class="map-stage">
+      <svg id="mapSvg" class="map-svg" role="img" aria-label="夜行列车线路图"></svg>
+      <div class="map-tip" id="mapTip"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ LINES (horizontal) ============ -->
+<section class="lines" id="lines">
+  <div class="lines-pin">
+    <div class="lines-head">
+      <p class="kicker">时刻表</p>
+      <h2 class="section-title">今晚，坐哪一趟？</h2>
+    </div>
+    <div class="lines-track" id="linesTrack"></div>
+    <div class="lines-progress"><i id="linesBar"></i></div>
+  </div>
+</section>
+
+<!-- ============ TICKETS ============ -->
+<section class="tickets" id="tickets">
+  <div class="tk-bg"><img src="img/ticket_desk.webp" alt="" loading="lazy"></div>
+  <div class="tk-pin">
+    <div class="tk-copy">
+      <p class="kicker">票夹</p>
+      <h2 class="section-title">每一站，<br>都留一张车票。</h2>
+      <p class="muted">日期、区间、晚点几分钟，都印在上面。翻翻票夹，就知道自己这一周走了多远。做成分享卡片，发给一起赶路的人。</p>
+    </div>
+    <div class="tk-stack" id="tkStack"></div>
+  </div>
+</section>
+
+<!-- ============ DINING ============ -->
+<section class="dining" id="dining">
+  <div class="dn-bg"><img src="img/dining_night.webp" alt="" loading="lazy"></div>
+  <div class="dn-copy">
+    <p class="kicker">餐车</p>
+    <h2 class="section-title">到站了，<br>吃点东西吧。</h2>
+    <p class="muted">专注攒铜板：5 分钟 1 枚，到一站 +2，跑完一条线 +20。<br>茶叶蛋、绿皮车上的泡面、兰州的牛肉拉面——桌上的点心，会陪你坐到下一站。</p>
+    <div class="coin-row"><span class="coin">铜</span><span id="coinNum">0</span><small>枚铜板</small></div>
+  </div>
+  <div class="marquee" id="mq1"></div>
+  <div class="marquee reverse" id="mq2"></div>
+</section>
+
+<!-- ============ DAY / NIGHT ============ -->
+<section class="compare">
+  <div class="cmp-head">
+    <p class="kicker">两套车厢</p>
+    <h2 class="section-title">白天是速写本，<br>夜里是夜车车厢。</h2>
+    <p class="muted">九十一座车站，每一站都有白天和夜晚两幅画。拖动看看。</p>
+  </div>
+  <div class="cmp" id="cmp">
+    <img src="img/st/lhasa.webp" alt="拉萨 白天" class="cmp-day" loading="lazy">
+    <div class="cmp-night" id="cmpNight"><img src="img/st/lhasa_night.webp" alt="拉萨 夜晚" loading="lazy"></div>
+    <div class="cmp-handle" id="cmpHandle"><span>昼 · 夜</span></div>
+  </div>
+  <div class="cmp-pick" id="cmpPick"></div>
+</section>
+
+<!-- ============ DETAILS ============ -->
+<section class="details">
+  <div class="dt-grid">
+    <article class="dt reveal-card"><h3>列车环境音</h3><p>铁轨的节奏、车厢的低鸣。点一下右上角，现在就能听。</p></article>
+    <article class="dt reveal-card"><h3>到站提醒</h3><p>锁屏也照常计时。到站时一声轻响，通知里就能继续发车或休息。</p></article>
+    <article class="dt reveal-card"><h3>中途下车也算数</h3><p>实在坐不住可以下车，已经专注的分钟照样入账，只是这一程没有铜板。</p></article>
+    <article class="dt reveal-card"><h3>本地、离线、无广告</h3><p>所有记录只存在你的手机里。没有账号，没有推送轰炸。</p></article>
+  </div>
+</section>
+
+<!-- ============ DOWNLOAD ============ -->
+<section class="final" id="download">
+  <div class="fn-bg">
+    <img src="img/platform.webp" alt="" class="fn-a" loading="lazy">
+    <img src="img/dawn.webp" alt="" class="fn-b" loading="lazy">
+  </div>
+  <div class="fn-copy">
+    <p class="kicker">检票口</p>
+    <h2 class="fn-title">今晚，上车吧。</h2>
+    <p class="muted">天亮之前，你会走得比想象中更远。</p>
+    <div class="hero-actions">
+      <a class="btn btn-amber btn-lg" href="downloads/night-train.apk" download>下载 Android 版 · 免费</a>
+    </div>
+    <p class="fine">Android 8.0 及以上 · v0.1.0</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="brand"><img src="img/icon.png" alt=""><span>夜行列车 · 番茄钟</span></div>
+  <p>车窗外的画，每一站都是手绘水彩风格。祝你一路顺风。</p>
+  <p class="fine">© 2026 Night Train</p>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script src="data.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
