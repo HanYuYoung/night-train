@@ -34,7 +34,6 @@
       .from('.hero .reveal-up', { y: 30, opacity: 0, duration: 1.2, stagger: .1 }, .6)
       .from('.nav', { opacity: 0, duration: 1.2, clearProps: 'opacity' }, .8)
       .from('.scroll-hint', { opacity: 0, duration: 1 }, 1.4);
-    tl.fromTo('.hero-float', { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.8, ease: 'expo.out' }, .5);
   };
   let started = false;
   const start = () => { if (!started) { started = true; setTimeout(heroIn, 350); } };
@@ -102,24 +101,6 @@
     .to('.hero-bg img', { scale: 1.12, yPercent: 8, ease: 'none' }, 0)
     .to('.hero-copy', { y: -140, opacity: 0, ease: 'none' }, 0)
     .to('.scroll-hint', { opacity: 0, ease: 'none', duration: .3 }, 0);
-
-  /* ---------------- hero phone ---------------- */
-  (() => {
-    const ph = $('.hero-phone'); if (!ph) return;
-    const imgs = $$('.screen img', ph); let k = 0;
-    setInterval(() => {
-      if (document.hidden || scrollY > innerHeight) return;
-      imgs[k].classList.remove('on'); k = (k + 1) % imgs.length; imgs[k].classList.add('on');
-    }, 2800);
-    const inner = ph;
-    gsap.set(ph, { rotate: 4, transformPerspective: 1200 });
-    addEventListener('pointermove', e => {
-      if (scrollY > innerHeight) return;
-      const x = e.clientX / innerWidth - .5, y = e.clientY / innerHeight - .5;
-      gsap.to(inner, { rotateY: x * 14, rotateX: -y * 10, duration: 1, ease: 'power3.out', transformPerspective: 1200 });
-    });
-    gsap.to('.hero-float', { yPercent: -18, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-  })();
 
   /* ---------------- journey ---------------- */
   (() => {
